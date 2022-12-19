@@ -79,3 +79,18 @@ h2 {
   outline: 0;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+li{
+  list-style-type: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+}
+
+ul{
+  //display: flex;
+  flex-direction:column;
+  text-align: left;
+  //align-items: flex-start;
+  margin-left:0px;
+}

@@ -15,21 +15,104 @@
 
   <div class="wrapper">
     <h2>LOCAL TAPAS</h2>
-    <p></p>
+    <!-- <p></p>
     <ul class="plates">
       <li>Loading Tapas...</li>
+    </ul> -->
+    <ul id="plates">
+      <!-- list of items will be added here -->
     </ul>
-    <form class="add-items">
-      <input type="text" name="item" placeholder="Item Name" required>
+    <form class="add-items" id="form">
+      <input type="text" id="item-name" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
   </div>
 
-<script>
+<!-- <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
   const items = [];
+  function list(){
+   let listItem = document.getElementById('item').innerHTML;
+    let addItem=`
+     <li>
+         <input type="checkbox"  id="item" ${itemsList.done ? 'checked' : ''} />
+         <label for="item">Whatsapp</label>
+       </li>
+     `
+    itemsList.insertAdjacentHTML('beforeend',addItem);
+  }
 
+</script> -->
+<!-- <form id="form">
+  <input type="text" id="item-name">
+  <input type="submit" value="Add Item">
+</form> -->
+
+
+
+<script>
+  // get the form element
+  const form = document.getElementById('form');
+  // get the plates div element
+  const platesDiv = document.getElementById('plates');
+
+  // create an array to store the items
+  let items = [];
+
+  // check if there are any items in local storage
+  if (localStorage.getItem('items')) {
+    // parse the items from local storage and assign them to the items array
+    items = JSON.parse(localStorage.getItem('items'));
+  }
+
+  // function to add an item to the list
+  const addItem = (item) => {
+    // create a new div element
+    const div = document.createElement('li');
+    // set the innerHTML of the div element
+    div.innerHTML = `
+      <input type="checkbox" data-index=${items.length} id="item${items.length}" ${item.done ? "checked" : ""}>
+      <label for="item${items.length}">${item.name}</label>
+    `;
+    // append the div element to the plates div
+    platesDiv.appendChild(div);
+  };
+
+  // function to update the local storage
+  const updateLocalStorage = () => {
+    // set the items in local storage
+    localStorage.setItem('items', JSON.stringify(items));
+  };
+
+  // loop through the items array and add each item to the list
+  items.forEach(addItem);
+
+  // add an event listener to the form to handle the submit event
+  form.addEventListener('submit', (e) => {
+    // prevent the default form submission behavior
+    e.preventDefault();
+    // get the value of the item-name input
+    const itemName = document.getElementById('item-name').value;
+    // add the item to the array
+    items.push({ name: itemName, done: false });
+    // add the item to the list
+    addItem({ name: itemName, done: false });
+    // update the local storage
+    updateLocalStorage();
+    // clear the value of the item-name input
+    document.getElementById('item-name').value = '';
+  });
+
+  // add an event listener to the plates div to handle the change event of the checkboxes
+  platesDiv.addEventListener('change', (e) => {
+    // get the data-index attribute of the checkbox that was clicked
+    const index = e.target.getAttribute('data-index');
+    // toggle the done property of the corresponding item in the items array
+    items[index].done = !items[index].done;
+    // update the local storage
+    updateLocalStorage();
+  });
 </script>
 
 
